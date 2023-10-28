@@ -10,8 +10,7 @@ public class QuestionRead {
 	private QuestionRead () {}
 	private final String filePath = this.getClass().getResource("/txtFile/").getPath();
 	public static ArrayList<String> categoryList = new ArrayList<>();
-	public String getQuestion(int category)
-	{
+	public String getQuestion(int category){
 		try {
 			//현재 작업 경로 가져오기
 			BufferedReader br = new BufferedReader(new FileReader(filePath+categoryList.get(category-1)+".txt"));;
@@ -24,7 +23,6 @@ public class QuestionRead {
 			
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("문제 읽기 에러" + e);
 		}
 		 return null;

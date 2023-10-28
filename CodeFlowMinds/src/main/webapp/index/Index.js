@@ -16,7 +16,7 @@ function isLogin(){
 		data: {type:'isLogin'},
 		success: r => {
 			let html = ``;
-			console.log(r)	
+
 			if (r) {
 				html = `<button onclick="logout()">로그아웃</button>`
 				loginState=true;
@@ -26,7 +26,7 @@ function isLogin(){
 					<button onclick="signUp()">가입</button>`
 				loginState=false;	
 			}
-				console.log(html)
+
 			document.querySelector('.memberBtnBox').innerHTML = html;
 		},
 		error: e => { console.log(e)}					 
@@ -39,11 +39,9 @@ function login() {
 		method: "get",
 		data: data,
 		success: r => {
-			console.log(r+'아이디')
 			
 			if (r != "fail") {
 				alert("로그인 성공")
-				console.log(r)
 				loginState = true;
 				window.sessionStorage.setItem('loginId',r);
 				// 로그인 여부에 따른 화면 출력
@@ -144,8 +142,6 @@ function getRoomList() {
 					<button onclick="selectRoom(${g.roomNum})"> 입장 </butt on>
 					</div>`
 			})
-
-
 		},
 		error: e => {
 			console.log(e)
@@ -173,7 +169,7 @@ function createRoom() {
 		},
 		error: e => { console.log(e) }
 	})
-	console.log("!!실행")
+	
 }
 
 // 모달 열기

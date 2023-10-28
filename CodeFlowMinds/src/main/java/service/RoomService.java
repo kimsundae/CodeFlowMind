@@ -21,9 +21,8 @@ public class RoomService extends GameException {
 	private Session session;
 	ObjectMapper mapper = new ObjectMapper();
 	
-	public void getMsg(String msg , Session _session,String type)
-	{
-		System.out.println("들어옴?");
+	public void getMsg(String msg , Session _session,String type){
+		
 		try {
 			this.sendDto = mapper.readValue(msg, SendDto.class);
 			this.session = _session;
@@ -33,18 +32,17 @@ public class RoomService extends GameException {
 		}
 		
 		
-		if(type.equals("createRoom")) {
+		if(type.equals("createRoom")) 
 			createRoom();
-		}else if(type.equals("selectRoom")) {		
+		else if(type.equals("selectRoom")) 		
 			selectRoom();
-		}else if(type.equals("startRound")) {
+		else if(type.equals("startRound")) 
 			startRound();
-		}
+		
 		
 	}
 
 	private void createRoom() {
-		System.out.println("룸 서비스 크리에이트");
 		for (int i = 0; i < ServerSocket.roomList.size(); i++) {
 			if (ServerSocket.roomList.get(i) == null)
 				break;
@@ -56,7 +54,6 @@ public class RoomService extends GameException {
 
 	private void selectRoom() {
 		try {
-			// 기본값 만들어야함
 			for (int i = 0; i < ServerSocket.roomList.size(); i++) {
 				if (ServerSocket.roomList.get(i) == null)
 					break;

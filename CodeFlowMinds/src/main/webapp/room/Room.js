@@ -77,9 +77,9 @@ clientSocket.onmessage = (e) => {
 	} 
 	else if (receiveMsg.type == 'startRound')
 	{
-		console.log('start??')
+
 		console.log(receiveMsg)
-		console.log(receiveMsg.nowRound)
+
 		startRound(receiveMsg.isTurn)
 		document.querySelector('.nowRound').innerHTML = receiveMsg.nowRound
 		document.querySelector('.allRound').innerHTML = receiveMsg.allRound
@@ -91,7 +91,7 @@ clientSocket.onmessage = (e) => {
 	else if (receiveMsg.type == 'endRound')
 		endRound();
 	else if(receiveMsg.type == 'randerBtn'){
-		console.log('rander 실행')
+
 		randerBtn();
 	}
 	else if (receiveMsg.type == "getQuestion") {
@@ -212,7 +212,6 @@ function makeDragList(receiveMsg){
 	draw_width = drawObject.brushWidth;
 	let arr = drawObject.dragList;	
 	 
-	console.log( arr );
 	
 			for(i=0;i<arr.length;i++)							
 				getDragList.push([parseInt(arr[i][0]),parseInt(arr[i][1])])				
@@ -221,7 +220,6 @@ function makeDragList(receiveMsg){
 }
 // 클라이언트들 그리는 함수
 function getDraw( arr ){
-	console.log( arr );
 	
 	context.beginPath();
 	context.moveTo(arr[0][0] - canvas.offsetLeft,
@@ -320,7 +318,7 @@ function isAdmin() {
 		async: false,
 		success: r => {
 			let btnBox = document.querySelector('.btnBox')
-			console.log(r)
+
 			let html = `<button onclick="ready()" type="button">준비</button>
 						<button onclick="exit()"type="button">나가기</button>`
 			if (r) 
@@ -367,7 +365,7 @@ function startSend(){
 }
 // 라운드 시작
 function startRound(_turn){
-	console.log('라운드 시작' + _turn);		
+	
 	isturn = _turn;
 	if(isturn)
 	{
@@ -407,7 +405,7 @@ function settimer(){
 //------------------------------------------------------------//
 // 결과 데이터베이스 업데이트
 function endRound(){
-	console.log('endRound실행!!!!')
+
 	clearInterval( timerInter )
 	$.ajax({
 		url : "../RoomController",

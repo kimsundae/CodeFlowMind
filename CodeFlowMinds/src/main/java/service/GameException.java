@@ -9,12 +9,10 @@ import model.dto.MemberDto;
 import model.dto.SendDto;
 
 public class GameException {
-	public void playerStatusUpdate(String _type,int rno) 
-	{
-		System.out.println("어 됨");
+	public void playerStatusUpdate(String _type,int rno) {
+
 		Vector<MemberDto> res = new Vector<>();
-		for(MemberDto mdt : ServerSocket.roomList.get(rno).getMemberVector())
-		{
+		for(MemberDto mdt : ServerSocket.roomList.get(rno).getMemberVector()){
 			res.add(MemberDto.builder()
 					.mid(mdt.getMid())
 					.isTurn(mdt.isTurn())
@@ -44,14 +42,11 @@ public class GameException {
 		});
 	}
 	
-	public boolean turnException(int rno,String mid)
-	{
+	public boolean turnException(int rno,String mid){
 		try {
 			boolean chk = false;
-			for(MemberDto mem : ServerSocket.roomList.get(rno).getMemberVector())
-			{
-				if(mem.getMid().equals(mid))
-				{
+			for(MemberDto mem : ServerSocket.roomList.get(rno).getMemberVector()){
+				if(mem.getMid().equals(mid)){
 					chk = mem.isTurn();
 				}
 			}
@@ -60,6 +55,7 @@ public class GameException {
 			// TODO: handle exception
 			System.out.println("턴 예외 에러"+e);
 		}
+		
 		return false;
 	}
 }

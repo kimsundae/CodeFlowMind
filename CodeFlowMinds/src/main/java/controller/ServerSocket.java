@@ -55,7 +55,7 @@ public class ServerSocket {
 
 					roomList.get(i).getMemberVector().remove(m);
 					nowRoom = true;
-					System.out.println("여기 됨?");
+					
 					PlayerService.getInstance().playerStatusUpdate("PlayerStatus", i);
 					break;
 				}					 				
@@ -89,9 +89,7 @@ public class ServerSocket {
 	public static SendDto<String> sendDto ;
 	@OnMessage // 클라이언트 소켓이 메시지를 보냈을때  매핑[연결] !!! 필수로 정의할 인수
 	public static void 서버메시지( Session session,@PathParam("mid") String mid , String msg ) throws Exception { 
-		System.out.println("서버가 클라이언트로부터 메시지 받음 : " );
 		ObjectMapper mapper = new ObjectMapper();
-		System.out.println("msg : " + msg);
 		
 		try {
 			sendDto = mapper.readValue(msg, SendDto.class);
@@ -99,10 +97,8 @@ public class ServerSocket {
 			System.out.println("변환 오류");
 			e2.printStackTrace();
 		}
-
 		
 		String type = sendDto.getType();
-		System.out.println("type: " + type);
 		if(sendDto.getServiceType().equals("Room"))
 		{
 			RoomService.getInstance().getMsg(msg, session, type);

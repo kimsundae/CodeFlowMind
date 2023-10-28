@@ -25,8 +25,7 @@ public class PlayerService extends GameException{
 	ObjectMapper mapper = new ObjectMapper();
 	String mid;
 	
-	public void getMsg(String msg , Session _session,String type,String _mid)
-	{
+	public void getMsg(String msg , Session _session,String type,String _mid){
 		try {
 			this.sendDto = mapper.readValue(msg, SendDto.class);
 			this.session = _session;
@@ -35,24 +34,20 @@ public class PlayerService extends GameException{
 			System.out.println("변환 에러");
 			return;
 		}
-		if(type.equals("chat")){
-			chat(msg);
-		}
-		else if(type.equals("selectQuestion")){
+		if(type.equals("chat"))
+			chat(msg);	
+		else if(type.equals("selectQuestion"))
 			seleteQuestion();
-		}else if( type.equals("sendDraw")) {
+		else if( type.equals("sendDraw")) 
 			sendDraw(msg);
-		}else if( type.equals("randerBtn") || type.equals("getClear") || type.equals("getUndoLast")) {
+		else if( type.equals("randerBtn") || type.equals("getClear") || type.equals("getUndoLast")) 
 			canvasControl();
-		}
-		
+			
 	}
-	private void canvasControl()
-	{
+	private void canvasControl(){
 		Vector<RoomDto> list = ServerSocket.roomList;
 		try {
 			String json = mapper.writeValueAsString(sendDto);
-			System.out.println("실행");
 			for(int i = 0; i < list.size(); i++) {
 
 				if(list.get(i) == null) break;
@@ -68,13 +63,11 @@ public class PlayerService extends GameException{
 			System.out.println("threeBranches 에러"+ e2);
 		}	
 	}
-	private void sendDraw(String msg)
-	{
+	private void sendDraw(String msg){
 		//턴 예외처리
-		if(!turnException(sendDto.getRoomNum(),mid))
-		{
-			return;
-		}
+		if(!turnException(sendDto.getRoomNum(),mid)) return;
+			
+		
 		//DrawDto용 send dto 초기화 
 		try {
 			SendDto<DrawDto> drawDto = mapper.readValue(msg, SendDto.class);
@@ -97,8 +90,7 @@ public class PlayerService extends GameException{
 		}
 		
 	}
-	private void chat(String msg)
-	{
+	private void chat(String msg){
 		//채팅용 send dto 초기화 
 		SendDto<ChatDto> _dto = new SendDto<ChatDto>();
 		try {
@@ -110,25 +102,25 @@ public class PlayerService extends GameException{
 		
 		//sendDto 안의 data를 ChatDto로 초기화
 		_dto.setData( mapper.convertValue(_dto.getData(), ChatDto.class));
-		System.out.println(_dto.toString());
+		
 		// chatdto 안에 있는 data에는 메세지가 아이디 : 메세지 형식으로 담겨있어 
-		// 같은 방 안에 있는 사람들에게 그대로 전달하면 됨 ,만약 정답이면 같은 방 안에 있는 유저에게 정답 알림
-		if(_dto.getData().getText().equals(ServerSocket.roomList.get(sendDto.getRoomNum()).getRoomQuestion()))
-		{
+		// 만약 정답이면 같은 방 안에 있는 유저에게 정답 알림
+		if(_dto.getData().getText().equals(ServerSocket.roomList.get(sendDto.getRoomNum()).getRoomQuestion())){
 			_dto.setType("answer");
-			for(MemberDto mdt : ServerSocket.roomList.get(sendDto.getRoomNum()).getMemberVector())
-			{
-				if(mdt.getMid().equals(_dto.getData().getMid()))
-				{
+			
+			for(MemberDto mdt : ServerSocket.roomList.get(sendDto.getRoomNum()).getMemberVector()){
+				
+				if(mdt.getMid().equals(_dto.getData().getMid())){
+					
 					mdt.setWinCount(mdt.getWinCount()+1);
 					break;
+					
 				}
 			}
 			
 			
 		}
-		for(MemberDto mdt : ServerSocket.roomList.get(sendDto.getRoomNum()).getMemberVector())
-		{
+		for(MemberDto mdt : ServerSocket.roomList.get(sendDto.getRoomNum()).getMemberVector()){
 			try {
 				mdt.getMemSession().getBasicRemote().sendText(mapper.writeValueAsString(_dto));
 				playerStatusUpdate("PlayerStatus",sendDto.getRoomNum());
@@ -139,13 +131,12 @@ public class PlayerService extends GameException{
 	}
 	private void seleteQuestion()
 	{
-		if(!turnException(sendDto.getRoomNum(),mid))
-		{
-			return;
-		}
+		if(!turnException(sendDto.getRoomNum(),mid)) return;
+			
+		
 		String ques = QuestionRead.getInstance().getQuestion(Integer.parseInt(sendDto.getData()));
 		ServerSocket.roomList.get(sendDto.getRoomNum()).setRoomQuestion(ques);
-		System.out.println(ques);
+		
 		ServerSocket.roomList.get(sendDto.getRoomNum()).getMemberVector().forEach(mem->{
 			try {
 				mem.getMemSession().getBasicRemote().sendText(
@@ -156,8 +147,7 @@ public class PlayerService extends GameException{
 								)
 						);
 			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println("좀 되라고"+e);
+				e.printStackTrace();
 			}
 
 		});

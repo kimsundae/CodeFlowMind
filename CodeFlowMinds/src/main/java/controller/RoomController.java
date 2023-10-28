@@ -59,7 +59,7 @@ public class RoomController extends HttpServlet {
 			// 계층형 Dto 안에 클라이언트들에게 필요 없는 정보들이 담겨있어 새로운 리스트에 필요한 정보들만 담아서 전송
 			ArrayList<RoomDto> resp = new ArrayList<RoomDto>();
 			ServerSocket.roomList.forEach( r->{ if( r == null ) { return;}
-			System.out.println(r.toString());
+			
 			resp.add(RoomDto.builder()
 					.roomNum(r.getRoomNum())
 					.allRound(r.getAllRound())
@@ -82,7 +82,7 @@ public class RoomController extends HttpServlet {
 				
 				if(list.get(i) == null) break;
 				
-				System.out.println((list.get(i).getMemberVector().size()));
+				
 				// 방번호 같고 멤버벡터 0번째 인덱스가 같은 id일 때 true 응답
 				if( rno == list.get(i).getRoomNum() && id.equals(list.get(i).getMemberVector().get(0).getMid())) {
 					response.getWriter().print(true); return;
@@ -92,7 +92,7 @@ public class RoomController extends HttpServlet {
 		}
 		// 방이 이미 실행상태인지
 		else if(_t.equals("isAlreadyStart")) {
-			System.out.println("얼레디 실행");
+			
 			int rno = Integer.parseInt(request.getParameter("rno"));
 			Vector<RoomDto> list = ServerSocket.roomList;
 			for(int i = 0; i < list.size(); i++) {
@@ -121,11 +121,11 @@ public class RoomController extends HttpServlet {
 		String pwd = request.getParameter("pwd");
 		// 반환된 방 번호
 		int rno = 0;
-		System.out.println("포스트");
+		
 		for(int i = 0; i < 50; i++) {
-			System.out.println("방만들기222");
+			
 			if( ServerSocket.roomList.get(i) == null ) {
-				System.out.println("방만들기");
+				
 				ServerSocket.roomList.set( i ,
 						RoomDto.builder().
 							roomNum(i).allRound(allRound).pwd(pwd).limitPlayer(limitPlayer).
@@ -147,10 +147,9 @@ public class RoomController extends HttpServlet {
 		
 		int rno = Integer.parseInt(request.getParameter("rno"));
 		String type = request.getParameter("type");
-		System.out.println("rno"+rno);
+		
 		System.out.println("pwd"+ServerSocket.roomList.get(rno).getPwd());
-		System.out.println("왜 실행안돼!!!");
-		System.out.println("null???? " + ServerSocket.roomList.get(0) == null);
+		
 		// 방 입장 전 비밀번호 확인 로직
 		if("checkRpwd".equals(type)) {
 			
@@ -187,7 +186,7 @@ public class RoomController extends HttpServlet {
 					index = i;
 				
 			}
-			System.out.println( list.get(index).getWinCount() == highWinCount  ? 1 : 0  );
+			
 			// 게임 안에서 가장 승리 카운트가 높다면 1로 설정
 			boolean result = 
 				MemberDao.getInstance().updateRecord(
@@ -216,36 +215,5 @@ public class RoomController extends HttpServlet {
 		QuestionRead.categoryList.add("food");
 		QuestionRead.categoryList.add("random");
 	      
-		new Thread() { 
-            public void run() {
-                while(true) {
-                    try {
-                       Thread.sleep(10000);
-                       for(int i=0;i < ServerSocket.roomList.size();i++ )
-                       {
-                           int a = ServerSocket.roomList.get(i).getMemberVector().size();
-                           if(a ==0)
-                           {
-                               ServerSocket.roomList.set(i, null);
-                           }
-                       }
-                       /*ServerSocket.roomList.forEach( r -> { 
-                           System.out.println("asd");
-                           if( r != null ) 
-                           {
-                               System.out.println("널체크");
-                               if(r.getNowPlayer() == 0) { 
-                                   System.out.println("0명 ");
-                                   r=null;
-                               }
-                           }    }
-                       );*/
-                   } catch (Exception e) {
-                       // 일단 예외 처리 발생하면 스레드 종료
-                       Thread.interrupted();
-                   }
-                }
-            } 
-        }.start();
 	}
 }
